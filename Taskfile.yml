@@ -28,7 +28,7 @@ tasks:
     silent: true
   up:
     cmds:
-     - docker compose up --build
+     - docker compose --env-file .env up -d --build
     silent: true
   down:
     cmds:

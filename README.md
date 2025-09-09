@@ -203,7 +203,7 @@ Feel free to fork, explore, and contribute improvements.
 - [Pillow](https://python-pillow.org/) — image handling
 - [XlsxWriter](https://xlsxwriter.readthedocs.io/) — Excel file generation
 - [MinIO](https://min.io/) — S3-compatible object storage
-- [DuckDB](https://duckdb.org/) + [Fireducks](https://github.com/fireducks) — analytics & reporting
+- [DuckDB](https://duckdb.org/) — analytics & reporting
 
 ### Utilities & Dev Tools
 - [Markdown](https://python-markdown.github.io/) — Markdown support

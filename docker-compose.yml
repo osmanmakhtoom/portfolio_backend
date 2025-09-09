@@ -1,0 +1,84 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: backend
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+    networks:
+      - backend
+    restart: always
+
+  postgres:
+    image: postgres:17
+    env_file:
+      - .env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./postgres-init:/docker-entrypoint-initdb.d:ro
+    networks:
+      - backend
+    restart: always
+
+  redis:
+    image: redis:7
+    env_file:
+      - .env
+    networks:
+      - backend
+    restart: always
+
+  celery:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: celery
+    command: celery -A core.celery worker -l info
+    env_file:
+      - .env
+    depends_on:
+      - backend
+      - redis
+    networks:
+      - backend
+    restart: always
+
+  celery-beat:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: celery-beat
+    command: celery -A core.celery beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    env_file:
+      - .env
+    depends_on:
+      - backend
+      - redis
+    networks:
+      - backend
+    restart: always
+
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    env_file:
+      - .env
+    command: server /data
+    ports:
+      - "9000:9000"
+    volumes:
+      - minio_data:/data
+    networks:
+      - backend
+    restart: always
+
+volumes:
+  postgres_data:
+  minio_data:
+
+networks:
+  backend:
+    driver: bridge

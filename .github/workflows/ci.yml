@@ -48,7 +48,9 @@ jobs:
           pip install -r requirements.txt
 
       - name: Lint code
-        run: ruff .
+        run: |
+          ruff check --quiet
+          ruff format
 
       - name: Type check
         run: mypy .
@@ -56,4 +58,4 @@ jobs:
       - name: Run tests
         run: |
           python manage.py migrate
-          pytest --cov=.
+          pytest --cov=apps . --cov-fail-under=80

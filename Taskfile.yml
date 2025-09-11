@@ -1,0 +1,40 @@
+version: '3'
+
+tasks:
+  clean:
+    cmds:
+      - ruff check --ignore F401 --ignore F403 --quiet
+      - ruff format
+    silent: true
+  deps:
+    cmds:
+      - pip install -r requirements.txt
+    silent: true
+  test:
+    cmds:
+      - pytest --cov=apps . --cov-fail-under=80
+    silent: true
+  make_migrations:
+    cmds:
+      - ./manage.py makemigrations
+    silent: true
+  createsuperuser:
+    cmds:
+      - ./manage.py createsuperuser
+    silent: true
+  migrate:
+    cmds:
+      - ./manage.py migrate
+    silent: true
+  run:
+    cmds:
+     - ./manage.py runserver
+    silent: true
+  up:
+    cmds:
+     - docker compose --env-file .env up -d --build
+    silent: true
+  down:
+    cmds:
+      - docker compose down --remove-orphans
+    silent: true

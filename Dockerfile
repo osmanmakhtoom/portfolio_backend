@@ -24,9 +24,13 @@ RUN $VENV_PATH/bin/pip install --upgrade pip
 RUN $VENV_PATH/bin/pip install --no-cache-dir -r requirements.txt
 
 COPY . .
-RUN $VENV_PATH/bin/python manage.py collectstatic --noinput
 
 ENV PATH="$VENV_PATH/bin:$PATH"
 
 EXPOSE 8000
-CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "4"]
+
+CMD ["sh", "-c", "$VENV_PATH/bin/python manage.py collectstatic --noinput && \
+                  $VENV_PATH/bin/python manage.py makemigrations && \
+                  $VENV_PATH/bin/python manage.py migrate && \
+                  exec $VENV_PATH/bin/gunicorn core.wsgi:application --bind 0.0.0.0:8000 --workers 4"]
+

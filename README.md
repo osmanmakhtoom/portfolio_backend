@@ -204,6 +204,7 @@ Production stack is managed with **Docker Compose**:
 ```bash
 docker compose -f docker-compose.yml up -d --build
 ```
+
 Or simply run:
 ```bash
 task up
@@ -230,51 +231,53 @@ Feel free to fork, explore, and contribute improvements.
 ## 🧰 Tools & Packages Used
 
 ### Core Backend
-* Django 5  
-* Django REST Framework  
-* django-environ  
-* psycopg  
-* Redis  
+* [Django](https://pypi.org/project/Django/)  
+* [Django REST Framework](https://pypi.org/project/djangorestframework/)  
+* [django-environ](https://pypi.org/project/django-environ/)  
+* [psycopg](https://pypi.org/project/psycopg/)  
+* [redis](https://pypi.org/project/redis/)  
 
 ### Asynchronous Tasks & Scheduling
-* Celery  
-* django-celery-beat  
-* django-celery-results  
+* [Celery](https://pypi.org/project/celery/)  
+* [django-celery-beat](https://pypi.org/project/django-celery-beat/)  
+* [django-celery-results](https://pypi.org/project/django-celery-results/)  
 
 ### Authentication & Security
-* djangorestframework-simplejwt  
-* django-allauth  
-* django-cors-headers  
-* Sentry SDK  
+* [djangorestframework-simplejwt](https://pypi.org/project/djangorestframework-simplejwt/)  
+* [django-allauth](https://pypi.org/project/django-allauth/)  
+* [django-cors-headers](https://pypi.org/project/django-cors-headers/)  
+* [sentry-sdk](https://pypi.org/project/sentry-sdk/)  
 
 ### Admin & Content Management
-* django-prose-editor  
-* drf-yasg  
-* django-filter  
+* [django-prose-editor](https://pypi.org/project/django-prose-editor/)  
+* [drf-yasg](https://pypi.org/project/drf-yasg/)  
+* [django-filter](https://pypi.org/project/django-filter/)  
 
 ### Media & Files
-* Pillow  
-* XlsxWriter  
-* django-storages  
-* boto3  
-* MinIO  
+* [Pillow](https://pypi.org/project/Pillow/)  
+* [XlsxWriter](https://pypi.org/project/XlsxWriter/)  
+* [django-storages](https://pypi.org/project/django-storages/)  
+* [boto3](https://pypi.org/project/boto3/)  
+* [minio](https://pypi.org/project/minio/)  
 
 ### Utilities & Dev Tools
-* Markdown  
-* simple-ulid  
-* django-phonenumber-field  
-* pytimeparse  
-* DuckDB  
-* Ruff  
-* mypy  
-* IPython  
-* pytest-django + pytest-cov + coverage  
+* [Markdown](https://pypi.org/project/Markdown/)  
+* [simple-ulid](https://pypi.org/project/simple-ulid/)  
+* [django-phonenumber-field](https://pypi.org/project/django-phonenumber-field/)  
+* [pytimeparse](https://pypi.org/project/pytimeparse/)  
+* [duckdb](https://pypi.org/project/duckdb/)  
+* [ruff](https://pypi.org/project/ruff/)  
+* [mypy](https://pypi.org/project/mypy/)  
+* [ipython](https://pypi.org/project/ipython/)  
+* [pytest-django](https://pypi.org/project/pytest-django/)  
+* [pytest-cov](https://pypi.org/project/pytest-cov/)  
+* [coverage](https://pypi.org/project/coverage/)  
 
 ### Deployment & Infrastructure
 * Docker Compose  
 * Taskfile  
 * GitHub Actions  
-* Gunicorn  
+* [Gunicorn](https://pypi.org/project/gunicorn/)  
 * Nginx  
 
 ---

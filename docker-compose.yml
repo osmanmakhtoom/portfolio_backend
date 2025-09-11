@@ -4,6 +4,8 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: backend
+    ports:
+      - "8000:8000"
     env_file:
       - .env
     volumes:
@@ -66,11 +68,28 @@ services:
     container_name: minio
     env_file:
       - .env
-    command: server /data
+    command: server /data --console-address ":9002"
     ports:
       - "9000:9000"
+      - "9002:9002"
     volumes:
       - minio_data:/data
+    networks:
+      - backend
+    restart: always
+
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    container_name: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./static:/static
+    depends_on:
+      - backend
     networks:
       - backend
     restart: always

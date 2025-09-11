@@ -1,66 +1,79 @@
 # 🖥️ Personal Portfolio Backend (Django + DRF)
 
-This repository contains the backend of my **personal portfolio**, built with **Django REST Framework (DRF)** and designed as a reference implementation of **modern backend best practices**.  
+This repository contains the backend of my **personal portfolio**, built with **Django REST Framework (DRF)** and designed as a reference implementation of **modern backend best practices**.
 
 It serves as both:
-1. The backend powering my personal portfolio website.
+
+1. The backend powering my personal portfolio website.  
 2. An **open-source example project** for recruiters, engineers, and contributors interested in clean DRF design patterns.
 
 ---
 
 ## 🚀 Features
 
-- **Content Management via Django Admin**:
-  - Blog posts
-  - Work experiences
-  - Education
-  - Skills
-  - Projects
-  - GitHub repositories (fetched automatically)
-  - Courses
-  - Resume page
-  - Gallery
-  - About section
-  - Contact me (with email integration and Telegram messaging)
+* **Content Management via Django Admin**:
+  * User accounts
+  * Blog posts
+  * Work experiences
+  * Education
+  * Skills
+  * Projects
+  * GitHub repositories (fetched automatically)
+  * Courses
+  * Resume page
+  * Gallery
+  * About section
+  * Contact me (with email integration and Telegram messaging)
 
-- **Backend Stack**:
-  - **Django 5 + DRF** — core backend & API
-  - **PostgreSQL** — relational database
-  - **Redis** — cache & Celery broker
-  - **Celery + Celery Beat + Celery Results** — async tasks & scheduling
-  - **django-cors-headers** — secure CORS management
-  - **Gunicorn** — production WSGI server
-  - **Nginx** — reverse proxy & static/media server
-  - **Docker Compose** — containerized services
+* **Backend Stack**:
+  * **Django 5 + DRF** — core backend & API
+  * **PostgreSQL** — relational database
+  * **Redis** — cache & Celery broker
+  * **Celery + Celery Beat + Celery Results** — async tasks & scheduling
+  * **django-cors-headers** — secure CORS management
+  * **Gunicorn** — production WSGI server
+  * **Nginx** — reverse proxy & static/media server
+  * **Docker Compose** — containerized services
 
-- **Developer Experience**:
-  - **Taskfile** — automate common dev tasks (migrations, tests, lint, etc.)
-  - **GitHub Actions** — CI/CD pipeline
-  - **Best Practices** — modular apps, clean serializers, typed code, environment configs
+* **Developer Experience**:
+  * **Taskfile** — automate common dev tasks (migrations, tests, lint, etc.)
+  * **GitHub Actions** — CI/CD pipeline
+  * **Best Practices** — modular apps, clean serializers, typed code, environment configs
+  * **Sentry** — error monitoring and performance tracking
 
 ---
 
-## 📐 Architecture (corrected)
+## 📐 Architecture
+
 ```
 Client (Browser)  -->  Nginx (edge: TLS, routing, static)  
-    ├─ /  & /_next/*  --> Next.js (Node SSR/SSG container)
-    ├─ /api/*         --> Django + Gunicorn (backend container)
-    ├─ /admin/*       --> Django Admin (protected)
-    └─ /flower/*      --> Celery Flower (protected, optional)
+├─ /  & /_next/* --> Next.js (Node SSR/SSG container)
+├─ /api/*        --> Django + Gunicorn (backend container)
+├─ /admin/*      --> Django Admin (protected)
+└─ /flower/*     --> Celery Flower (protected, optional)
 
 Backend (Django)  --> Postgres (DB) & Redis (cache + Celery broker)  
 Celery workers & beat access Redis and Postgres internally (not exposed).
 Static/media can be served by Nginx or hosted on S3/CDN.
 ```
 
+---
+
 ## 🛠️ Installation & Setup
 
 ### Prerequisites
-- Docker & Docker Compose
-- Taskfile (optional but recommended)
-- Python 3.12+ (for local development)
+
+* Docker & Docker Compose  
+* Taskfile (optional but recommended)  
+* Python 3.12+ (for local development)  
+
+---
 
 ### Quickstart (Docker Compose)
+
+<details>
+<summary>📥 Setup & Run</summary>
+
 ```bash
 # Clone repository
 git clone git@github.com:osmanmakhtoom/portfolio_backend.git
@@ -73,93 +86,129 @@ cp .env.example .env
 docker compose up --build
 ```
 
-The backend will be available at:  
-`http://localhost:8000/api/v1/`
+</details>
+
+Backend available at: [http://localhost:8000/api/v1/](http://localhost:8000/api/v1/)
 
 ---
 
 ## ⚡ Development Workflow
 
 ### Using Taskfile
+
+<details>
+<summary>🛠 Taskfile Commands</summary>
+
 ```bash
+# Start Docker services
+task up
+
 # Run migrations
 task migrate
 
-# Create superuser
+# Create database migrations
+task make_migrations
+
+# Create a superuser
 task createsuperuser
 
-# Run tests
+# Run tests (with 80% coverage check)
 task test
 
-# Lint & format
-task lint
+# Lint & format code
+task clean
 
-# Run
+# Run development server
 task run
+
+# Stop and remove Docker services
+task down
 ```
+</details>
+
+---
 
 ### Without Taskfile
+
+<details>
+<summary>⚙️ Django Management Commands</summary>
+
 ```bash
 docker compose exec backend python manage.py migrate
+docker compose exec backend python manage.py makemigrations
 docker compose exec backend python manage.py createsuperuser
 ```
+</details>
 
 ---
 
 ## 🧩 API Endpoints (Planned)
 
-- `/api/v1/blog/`
-- `/api/v1/experiences/`
-- `/api/v1/education/`
-- `/api/v1/skills/`
-- `/api/v1/projects/`
-- `/api/v1/github-repos/`
-- `/api/v1/courses/`
-- `/api/v1/gallery/`
-- `/api/v1/about/`
-- `/api/v1/resume/`
-- `/api/v1/contact/`
+* `/api/v1/account/` (Implemented & Tested)  
+* `/api/v1/blog/`  
+* `/api/v1/experiences/`  
+* `/api/v1/education/`  
+* `/api/v1/skills/`  
+* `/api/v1/projects/`  
+* `/api/v1/github-repos/`  
+* `/api/v1/courses/`  
+* `/api/v1/gallery/`  
+* `/api/v1/about/`  
+* `/api/v1/resume/`  
+* `/api/v1/contact/`
 
 All endpoints are designed with:
-- Pagination
-- Filtering & ordering
-- Serializer layers for clean separation
-- Caching for high-traffic data (projects, repos)
+
+* Pagination  
+* Filtering & ordering  
+* Serializer layers for clean separation  
+* Caching for high-traffic data (projects, repos)  
 
 ---
 
 ## 🔄 Background Tasks
 
 Celery workers handle:
-- Contact form email delivery
-- Fetching GitHub repositories periodically
-- Scheduled maintenance tasks
-- Async heavy operations (e.g., generating resume PDFs)
+
+* Contact form email delivery  
+* Fetching GitHub repositories periodically  
+* Scheduled maintenance tasks  
+* Async heavy operations (e.g., generating resume PDFs)  
 
 ---
 
 ## 🛡️ Security & Best Practices
 
-- Environment-based settings (`.env`)
-- CORS controlled via **django-cors-headers**
-- Strict separation of dev/stage/prod configs
-- Dockerized deployment with Gunicorn + Nginx
-- GitHub Actions CI/CD (linting, testing, deployment)
+* Environment-based settings (`.env`)  
+* CORS controlled via **django-cors-headers**  
+* Strict separation of dev/stage/prod configs  
+* Dockerized deployment with Gunicorn + Nginx  
+* GitHub Actions CI/CD (linting, testing, deployment)  
+* Sentry for error tracking and performance monitoring  
 
 ---
 
 ## 📦 Deployment
 
 Production stack is managed with **Docker Compose**:
-- **Nginx** — reverse proxy & static files
-- **Gunicorn** — Django app server
-- **PostgreSQL + Redis** — data persistence
-- **Celery workers + beat** — background jobs
 
-Example production run:
+* **Nginx** — reverse proxy & static files  
+* **Gunicorn** — Django app server  
+* **PostgreSQL + Redis** — data persistence  
+* **Celery workers + beat** — background jobs  
+* **S3 / MinIO** — media storage (via `django-storages` and `boto3`)  
+
+<details>
+<summary>🚀 Production Run</summary>
+
 ```bash
-docker compose -f docker-compose.prod.yml up -d --build
+docker compose -f docker-compose.yml up -d --build
 ```
+Or simply run:
+```bash
+task up
+```
+</details>
 
 ---
 
@@ -168,76 +217,80 @@ docker compose -f docker-compose.prod.yml up -d --build
 This project is **open source** to showcase **DRF best practices**.  
 Feel free to fork, explore, and contribute improvements.
 
-1. Fork repo
-2. Create feature branch (`git checkout -b feature/awesome`)
-3. Commit changes
-4. Push branch & open PR
+1. Fork repo  
+2. Create feature branch:  
+   ```bash
+   git checkout -b feat/awesome
+   ```
+3. Commit changes  
+4. Push branch & open PR  
 
 ---
 
 ## 🧰 Tools & Packages Used
 
 ### Core Backend
-- [Django 5](https://www.djangoproject.com/) — web framework
-- [Django REST Framework](https://www.django-rest-framework.org/) — API framework
-- [django-environ](https://github.com/joke2k/django-environ) — environment variable management
-- [psycopg3](https://www.psycopg.org/) — PostgreSQL driver
-- [Redis](https://redis.io/) — caching & Celery broker
+* Django 5  
+* Django REST Framework  
+* django-environ  
+* psycopg  
+* Redis  
 
 ### Asynchronous Tasks & Scheduling
-- [Celery](https://docs.celeryq.dev/) — async task queue
-- [django-celery-beat](https://docs.celeryq.dev/en/stable/django/first-steps-with-django.html#beat) — periodic task scheduling
-- [django-celery-results](https://docs.celeryq.dev/en/stable/django/first-steps-with-django.html#results-backend) — task result backend
+* Celery  
+* django-celery-beat  
+* django-celery-results  
 
 ### Authentication & Security
-- [djangorestframework-simplejwt](https://django-rest-framework-simplejwt.readthedocs.io/) — JWT authentication
-- [django-allauth](https://django-allauth.readthedocs.io/) — social login / OAuth
-- [django-cors-headers](https://github.com/adamchainz/django-cors-headers) — manage CORS
+* djangorestframework-simplejwt  
+* django-allauth  
+* django-cors-headers  
+* Sentry SDK  
 
 ### Admin & Content Management
-- [django-prose-editor](https://django-prose-editor.readthedocs.io/) — rich text editing
-- [drf-yasg](https://drf-yasg.readthedocs.io/) — Swagger / OpenAPI documentation
-- [django-filter](https://django-filter.readthedocs.io/) — filtering support for APIs
+* django-prose-editor  
+* drf-yasg  
+* django-filter  
 
-### Media, Files & Analytics
-- [Pillow](https://python-pillow.org/) — image handling
-- [XlsxWriter](https://xlsxwriter.readthedocs.io/) — Excel file generation
-- [MinIO](https://min.io/) — S3-compatible object storage
-- [DuckDB](https://duckdb.org/) — analytics & reporting
+### Media & Files
+* Pillow  
+* XlsxWriter  
+* django-storages  
+* boto3  
+* MinIO  
 
 ### Utilities & Dev Tools
-- [Markdown](https://python-markdown.github.io/) — Markdown support
-- [simple-ulid](https://github.com/simple-ulid/simple-ulid) — ULID identifiers
-- [django-phonenumber-field](https://github.com/stefanfoulis/django-phonenumber-field) — phone number validation
-- [pytimeparse](https://pypi.org/project/pytimeparse/) — parse durations
-- [Ruff](https://github.com/charliermarsh/ruff) — linter
-- [mypy](http://mypy-lang.org/) — static type checking
-- [IPython](https://ipython.org/) — interactive development shell
-- [pytest-django](https://pytest-django.readthedocs.io/) + [pytest-cov](https://pytest-cov.readthedocs.io/) + [coverage](https://coverage.readthedocs.io/) — testing & coverage
+* Markdown  
+* simple-ulid  
+* django-phonenumber-field  
+* pytimeparse  
+* DuckDB  
+* Ruff  
+* mypy  
+* IPython  
+* pytest-django + pytest-cov + coverage  
 
 ### Deployment & Infrastructure
-- [Docker Compose](https://docs.docker.com/compose/) — container orchestration
-- [Taskfile](https://taskfile.dev/) — automate routine dev tasks
-- [GitHub Actions](https://docs.github.com/en/actions) — CI/CD pipelines
-- [Gunicorn](https://gunicorn.org/) — WSGI server
-- [Nginx](https://www.nginx.com/) — reverse proxy, TLS, static/media serving
-- [Sentry SDK](https://docs.sentry.io/platforms/python/django/) — error monitoring
+* Docker Compose  
+* Taskfile  
+* GitHub Actions  
+* Gunicorn  
+* Nginx  
 
 ---
 
 ## 📄 License
+
 MIT License — you can use this project freely as a reference or starting point.
 
 ---
 
 ## 📌 Notes for Recruiters
 
-This project is more than just a portfolio backend:  
-- It demonstrates **real-world Django/DRF architecture**.  
-- It includes **CI/CD, Docker, async tasks, caching, and modular design**.  
-- It shows my approach to **clean, scalable, production-ready code**.  
+This project is more than just a portfolio backend:
 
-If you’d like to see the **frontend (Next.js)** that consumes this API, check here:  
-👉 [Frontend Repository (coming soon)](https://github.com/osmanmakhtoom/portfolio_frontend)
+* It demonstrates **real-world Django/DRF architecture**.  
+* It includes **CI/CD, Docker, async tasks, caching, and modular design**.  
+* It shows my approach to **clean, scalable, production-ready code**.  
 
----
+👉 Frontend repo (Next.js, coming soon): [portfolio_frontend](https://github.com/osmanmakhtoom/portfolio_frontend)

@@ -18,6 +18,10 @@ tasks:
     cmds:
       - ./manage.py makemigrations
     silent: true
+  createsuperuser:
+    cmds:
+      - ./manage.py createsuperuser
+    silent: true
   migrate:
     cmds:
       - ./manage.py migrate
